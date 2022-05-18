@@ -6,6 +6,7 @@ classdef AbstractFilter < handle
     end
     
     properties
+        Dropdowns FilterDropdownSetting = FilterDropdownSetting.empty;
         Settings FilterSetting = FilterSetting.empty;
         ImageWidth
         ImageHeight

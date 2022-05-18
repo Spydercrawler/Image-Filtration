@@ -1,12 +1,12 @@
-classdef Filter_Gaussian_Linear_Spatial < AbstractFilter
-    %FILTER_Filter_Gaussian_LinearSpatial - Filter is Gaussian
+classdef Filter_EdgeTaper_Gaussian < AbstractFilter
+    %FILTER_Filter_EdgeTaper_Gaussian - Gaussian Edge Taper
     
     properties
-        Name = 'Gaussian Linear Spatial Filter';
+        Name = 'Gaussian Edge Taper';
     end
     
     methods
-        function obj = Filter_Gaussian_Linear_Spatial()
+        function obj = Filter_EdgeTaper_Gaussian()
             % Create settings:
             firstSettingName = 'Kernel Size';
             firstSettingDefault = 30; % Value should not be negative
@@ -34,7 +34,7 @@ classdef Filter_Gaussian_Linear_Spatial < AbstractFilter
             k = settingValues('Kernel Size');
             sd = settingValues('Standard Deviation');
             filter=fspecial('gaussian',k,sd);
-            img_out = imfilter(img_in,filter,'circular');
+            img_out = edgetaper(img_in,filter);
         end
     end
 end

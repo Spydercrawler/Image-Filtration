@@ -1,12 +1,12 @@
-classdef Filter_Disk_Linear_Spatial < AbstractFilter
-    %FILTER_Filter_Disk_LinearSpatial
+classdef Filter_EdgeTaper_Disk < AbstractFilter
+    %FILTER_Filter_EdgeTaper_Disk - Disk Edge Taper
     
     properties
-        Name = 'Disk Linear Spatial Filter';
+        Name = 'Disk Edge Taper';
     end
     
     methods
-        function obj = Filter_Disk_Linear_Spatial()
+        function obj = Filter_EdgeTaper_Disk()
             % Create settings:
             firstSettingName = 'Disk Radius';
             firstSettingDefault = 3; % Value should not be negative
@@ -22,7 +22,7 @@ classdef Filter_Disk_Linear_Spatial < AbstractFilter
         function img_out = process(obj,img_in,settingValues)
             r = settingValues('Disk Radius');
             filter=fspecial('disk',r);
-            img_out = imfilter(img_in,filter,'circular');
+            img_out = edgetaper(img_in,filter);
         end
     end
 end

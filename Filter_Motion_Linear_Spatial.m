@@ -33,7 +33,7 @@ classdef Filter_Motion_Linear_Spatial < AbstractFilter
             lm = settingValues('Linear Motion');
             dm = settingValues('Direction of Motion');
             filter=fspecial('motion',lm,dm);
-            img_out = imfilter(img_in,filter);
+            img_out = imfilter(img_in,filter,'circular');
         end
     end
 end

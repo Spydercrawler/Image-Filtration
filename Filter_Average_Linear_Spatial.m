@@ -22,7 +22,7 @@ classdef Filter_Average_Linear_Spatial < AbstractFilter
         function img_out = process(obj,img_in,settingValues)
             k = settingValues('Kernel Size');
             filter=fspecial('average',k);
-            img_out = imfilter(img_in,filter);
+            img_out = imfilter(img_in,filter,'circular');
         end
     end
 end

@@ -135,6 +135,10 @@ classdef MidtermProject < matlab.apps.AppBase
             app.FFTTabOriginalImageButton.Enable = app.displayProcessedImage;
             app.HistTabOriginalImageButton.Enable = app.displayProcessedImage;
         end
+        
+        function updateFilterHeight(app,index,pixelHeight)
+            app.FilterSettingsLayout.RowHeight{index} = pixelHeight;
+        end
     end
     
 
@@ -148,16 +152,29 @@ classdef MidtermProject < matlab.apps.AppBase
             if(valueDifference > 0) % Add filters
                 % Add rows to filter settings layout to match the number of
                 % filters
-                app.FilterSettingsLayout.RowHeight = repmat({'fit'},event.Value,1);
+                newRowHeights = repmat({22},valueDifference,1);
+                app.FilterSettingsLayout.RowHeight = ...
+                    [app.FilterSettingsLayout.RowHeight,newRowHeights];
                 
                 % Add filters
                 for i = 1:valueDifference
                     newPanel = FilterPanel(app.FilterSettingsLayout);
                     newPanel.Layout.Row = length(app.filters)+1;
                     newPanel.Layout.Column = 1;
+                    % Allow height changing
+                    newPanel.filterIndex = length(app.filters)+1;
+                    newPanel.filterHeightUpdateFcn = ...
+                        @(index,height) app.updateFilterHeight(index,height);
+                    
                     app.filters{end+1} = newPanel;
                 end
             elseif(valueDifference < 0) % Remove filters
+                % Remove rows from filter settings layout so it matches the
+                % number of filters
+                numRows = length(app.FilterSettingsLayout.RowHeight);
+                app.FilterSettingsLayout.RowHeight = ...
+                    app.FilterSettingsLayout.RowHeight(1:numRows+valueDifference);
+                
                 for i = 1:abs(valueDifference)
                     delete(app.filters{end}); % Remove last filter panel
                     app.filters(end) = []; % Remove from list
@@ -324,8 +341,9 @@ classdef MidtermProject < matlab.apps.AppBase
 
             % Create NumFiltersSpinner
             app.NumFiltersSpinner = uispinner(app.NumFiltersLayout);
+            app.NumFiltersSpinner.UpperLimitInclusive = 'off';
             app.NumFiltersSpinner.ValueChangingFcn = createCallbackFcn(app, @NumFiltersSpinnerValueChanging, true);
-            app.NumFiltersSpinner.Limits = [0 4];
+            app.NumFiltersSpinner.Limits = [0 100];
             app.NumFiltersSpinner.RoundFractionalValues = 'on';
             app.NumFiltersSpinner.Layout.Row = 2;
             app.NumFiltersSpinner.Layout.Column = 1;
@@ -334,13 +352,13 @@ classdef MidtermProject < matlab.apps.AppBase
             app.FilterSettingsPanel = uipanel(app.ControlLayout);
             app.FilterSettingsPanel.Layout.Row = 3;
             app.FilterSettingsPanel.Layout.Column = 1;
-            app.FilterSettingsPanel.Scrollable = 'on';
 
             % Create FilterSettingsLayout
             app.FilterSettingsLayout = uigridlayout(app.FilterSettingsPanel);
             app.FilterSettingsLayout.ColumnWidth = {'1x', 11};
-            app.FilterSettingsLayout.RowHeight = {'1x'};
+            app.FilterSettingsLayout.RowHeight = {22};
             app.FilterSettingsLayout.Padding = [0 0 0 0];
+            app.FilterSettingsLayout.Scrollable = 'on';
 
             % Create ProcessImageButton
             app.ProcessImageButton = uibutton(app.ControlLayout, 'push');

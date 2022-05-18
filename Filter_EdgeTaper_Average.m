@@ -1,18 +1,18 @@
-classdef Filter_Disk_Linear_Spatial < AbstractFilter
-    %FILTER_Filter_Disk_LinearSpatial
+classdef Filter_EdgeTaper_Average < AbstractFilter
+    %FILTER_Filter_EdgeTaper_Average - Averaging Edge Taper
     
     properties
-        Name = 'Disk Linear Spatial Filter';
+        Name = 'Averaging Edge Taper';
     end
     
     methods
-        function obj = Filter_Disk_Linear_Spatial()
+        function obj = Filter_EdgeTaper_Average()
             % Create settings:
-            firstSettingName = 'Disk Radius';
+            firstSettingName = 'Kernel Size';
             firstSettingDefault = 3; % Value should not be negative
             firstSettingBounds = [0,100]; % Value of should not be negative
-            firstSettingForceInteger = true; % Force K to be an integer
-            firstSettingInclusivity = [false, false]; % Bounds are not inclusive. K can not be 0.
+            firstSettingForceInteger = true; % Force to be an integer
+            firstSettingInclusivity = [false, true]; % Bounds are partially inclusive cannot be 0.
             obj.Settings(1) = FilterSetting(firstSettingName,...
                                             firstSettingDefault,...
                                             firstSettingBounds,...
@@ -20,9 +20,9 @@ classdef Filter_Disk_Linear_Spatial < AbstractFilter
                                             firstSettingInclusivity);
         end
         function img_out = process(obj,img_in,settingValues)
-            r = settingValues('Disk Radius');
-            filter=fspecial('disk',r);
-            img_out = imfilter(img_in,filter,'circular');
+            k = settingValues('Kernel Size');
+            filter=fspecial('average',k);
+            img_out = edgetaper(img_in,filter);
         end
     end
 end
