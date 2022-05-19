@@ -303,7 +303,7 @@ classdef FinalProject < matlab.apps.AppBase
             % Create UIFigure and hide until all components are created
             app.UIFigure = uifigure('Visible', 'off');
             app.UIFigure.Position = [100 100 640 480];
-            app.UIFigure.Name = 'Midterm Project (Authors: John Bass, Margaret Luffman, Matthew Callahan)';
+            app.UIFigure.Name = 'Final Project (Authors: John Bass, Margaret Luffman, Matthew Callahan)';
 
             % Create MainLayout
             app.MainLayout = uigridlayout(app.UIFigure);
