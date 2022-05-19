@@ -1,4 +1,4 @@
-classdef MidtermProject < matlab.apps.AppBase
+classdef FinalProject < matlab.apps.AppBase
 
     % Properties that correspond to app components
     properties (Access = public)
@@ -525,7 +525,7 @@ classdef MidtermProject < matlab.apps.AppBase
     methods (Access = public)
 
         % Construct app
-        function app = MidtermProject
+        function app = FinalProject
 
             % Create UIFigure and components
             createComponents(app)
